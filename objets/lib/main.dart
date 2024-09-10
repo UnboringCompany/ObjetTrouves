@@ -1,7 +1,9 @@
 import 'dart:convert';
+import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'API_call.dart';
+
 
 void main() {
   runApp(MyApp());
@@ -26,37 +28,26 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  String _selectedType = '';
-  String _selectedGare = '';
+  String _selectedGare = 'Paris'; // Valeur par défaut
+  String _selectedType = 'Vêtements, chaussures';
+  DateTime? _selectedDateBefore = DateTime(2012,1,1);
+  DateTime? _selectedDateAfter = DateTime.now();
 
-  List<dynamic> _filterData(List<dynamic> data) {
-    return data.where((record) {
-      final type = record['gc_obo_type_c'] ?? '';
-      final gare = record['gc_obo_gare_origine_r_name'] ?? '';
-      return (_selectedType.isEmpty || type.contains(_selectedType)) &&
-             (_selectedGare.isEmpty || gare.contains(_selectedGare));
-    }).toList();
-  }
+  final List<String> _types = [
+    'Vêtements, chaussures',
+    'Optique',
+    'Appareils électroniques, informatiques, appareils photo',
+    // Ajoutez d'autres types ici
+  ];
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Flutter API Example'),
+        title: Text('Flutter API SNCF'),
       ),
       body: Column(
         children: [
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              decoration: InputDecoration(labelText: 'Type d\'objet'),
-              onChanged: (value) {
-                setState(() {
-                  _selectedType = value;
-                });
-              },
-            ),
-          ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
@@ -68,9 +59,78 @@ class _MyHomePageState extends State<MyHomePage> {
               },
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: Expanded(
+              child: DropdownButton<String>(
+                value: _selectedType.isEmpty ? null : _selectedType,
+                hint: Text('Type d\'objet'),
+                items: _types.map((String value) {
+                  return DropdownMenuItem<String>(
+                    value: value,
+                    child: Text(value),
+                  );
+                }).toList(),
+                onChanged: (value) {
+                  setState(() {
+                    _selectedType = value!;
+                  });
+                },
+              ),
+            ),
+          ),
+
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(labelText: 'De ... (YYYY-MM-DD)'),
+              onTap: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _selectedDateBefore = picked;
+                  });
+                }
+              },
+              controller: TextEditingController(
+                text: _selectedDateBefore != null
+                    ? _selectedDateBefore!.toLocal().toString().split(' ')[0]
+                    : '',
+              ),
+            ),
+          ),
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: TextField(
+              decoration: InputDecoration(labelText: 'A ... (YYYY-MM-DD)'),
+              onTap: () async {
+                final DateTime? picked = await showDatePicker(
+                  context: context,
+                  initialDate: DateTime.now(),
+                  firstDate: DateTime(2000),
+                  lastDate: DateTime(2101),
+                );
+                if (picked != null) {
+                  setState(() {
+                    _selectedDateAfter = picked;
+                  });
+                }
+              },
+              controller: TextEditingController(
+                text: _selectedDateAfter != null
+                    ? _selectedDateAfter!.toLocal().toString().split(' ')[0]
+                    : '',
+              ),
+            ),
+          ),
           Expanded(
             child: FutureBuilder<List<dynamic>>(
-              future: fetchData(),
+              future: fetchData(_selectedGare, _selectedType, _selectedDateBefore.toString(), _selectedDateAfter.toString()),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -79,14 +139,16 @@ class _MyHomePageState extends State<MyHomePage> {
                 } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
                   return Center(child: Text('No data available'));
                 } else {
-                  final filteredData = _filterData(snapshot.data!);
+                  print("snapshot data:");
+                  print(snapshot.data);
                   return ListView.builder(
-                    itemCount: filteredData.length,
+                    itemCount: snapshot.data?.toList().length,
                     itemBuilder: (context, index) {
-                      final record = filteredData[index];
+                      final record = snapshot.data?.toList()[index];
+                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + record['date'];
                       return ListTile(
-                        title: Text(record['gc_obo_gare_origine_r_name'] ?? 'No title'),
-                        subtitle: Text(record['gc_obo_nature_c'] ?? 'No description'),
+                        title: Text(record['gc_obo_nature_c'] ?? 'No title'),
+                        subtitle: Text(lieuxdate),
                       );
                     },
                   );
@@ -99,6 +161,7 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
+
 
 
 
