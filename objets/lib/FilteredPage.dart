@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'API_call.dart';
 
 class FilteredPage extends StatefulWidget {
@@ -17,6 +18,24 @@ class _FilterPageState extends State<FilteredPage> {
     'Optique',
     'Appareils électroniques, informatiques, appareils photo',
   ];
+
+  String _formatDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    return DateFormat('HH:mm dd/MM/yyyy').format(date);
+  }
+
+  Future<void> _selectDate(BuildContext context, DateTime? initialDate, Function(DateTime) onDateSelected) async {
+    final DateTime? picked = await showDatePicker(
+      context: context,
+      initialDate: initialDate ?? DateTime.now(),
+      firstDate: DateTime(2000),
+      lastDate: DateTime(2101),
+      locale: Locale('fr', 'FR'), // Utiliser le format français
+    );
+    if (picked != null) {
+      onDateSelected(picked);
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -65,49 +84,39 @@ class _FilterPageState extends State<FilteredPage> {
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              decoration: InputDecoration(labelText: 'De ... (YYYY-MM-DD)'),
+              decoration: InputDecoration(labelText: 'De ... (dd/MM/yyyy)'),
               onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (picked != null) {
+                await _selectDate(context, _selectedDateBefore, (picked) {
                   setState(() {
                     _selectedDateBefore = picked;
                   });
-                }
+                });
               },
               controller: TextEditingController(
                 text: _selectedDateBefore != null
-                    ? _selectedDateBefore!.toLocal().toString().split(' ')[0]
+                    ? DateFormat('dd/MM/yyyy').format(_selectedDateBefore!)
                     : '',
               ),
+              readOnly: true, // Rendre le champ de texte en lecture seule
             ),
           ),
           Padding(
             padding: const EdgeInsets.all(8.0),
             child: TextField(
-              decoration: InputDecoration(labelText: 'A ... (YYYY-MM-DD)'),
+              decoration: InputDecoration(labelText: 'A ... (dd/MM/yyyy)'),
               onTap: () async {
-                final DateTime? picked = await showDatePicker(
-                  context: context,
-                  initialDate: DateTime.now(),
-                  firstDate: DateTime(2000),
-                  lastDate: DateTime(2101),
-                );
-                if (picked != null) {
+                await _selectDate(context, _selectedDateAfter, (picked) {
                   setState(() {
                     _selectedDateAfter = picked;
                   });
-                }
+                });
               },
               controller: TextEditingController(
                 text: _selectedDateAfter != null
-                    ? _selectedDateAfter!.toLocal().toString().split(' ')[0]
+                    ? DateFormat('dd/MM/yyyy').format(_selectedDateAfter!)
                     : '',
               ),
+              readOnly: true, // Rendre le champ de texte en lecture seule
             ),
           ),
           Expanded(
@@ -129,9 +138,8 @@ class _FilterPageState extends State<FilteredPage> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final record = snapshot.data![index];
-                      String lieuxdate = record['gc_obo_gare_origine_r_name'] +
-                          " " +
-                          record['date'];
+                      String formattedDate = _formatDate(record['date']);
+                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + formattedDate;
                       return ListTile(
                         title: Text(record['gc_obo_nature_c'] ?? 'No title'),
                         subtitle: Text(lieuxdate),
@@ -147,3 +155,4 @@ class _FilterPageState extends State<FilteredPage> {
     );
   }
 }
+

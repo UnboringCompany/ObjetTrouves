@@ -24,7 +24,7 @@ class _HomePageState extends State<HomePage> {
     if (lastConnectionDate == null) {
       lastConnectionDate = DateTime(2012, 1, 1); // Date par défaut si aucune date n'est trouvée
     }
-    return fetchDataSinceLastConnection(DateTime.now().toString());
+    return fetchDataSinceLastConnection(lastConnectionDate.toString(), DateTime.now().toString());
   }
 
   String _formatDate(String dateString) {

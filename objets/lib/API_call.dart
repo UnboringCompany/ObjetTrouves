@@ -35,13 +35,8 @@ Future<List<dynamic>> fetchData(String city, String type, String datebefore, Str
   }
 }
 
-Future<List<dynamic>> fetchDataSinceLastConnection(String dateafter) async {
-  // DateTime? lastConnectionDate = await getLastConnectionDate();
-  // if (lastConnectionDate == null) {
-  //   lastConnectionDate = DateTime(2012, 1, 1); // Default date if no date is found
-  // }
-  DateTime lastConnectionDate = DateTime(2024, 9, 23);
-  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=date%20<%20"$dateafter"%20and%20date%20>%20"$lastConnectionDate"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=20&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
+Future<List<dynamic>> fetchDataSinceLastConnection(String datebefore, String dateafter) async {
+  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=date%20<%20"$dateafter"%20and%20date%20>%20"$datebefore"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=20&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
   print("JSON");
   print(response.body);
 
