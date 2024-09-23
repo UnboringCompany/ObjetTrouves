@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:intl/intl.dart';
 import 'API_call.dart';
 
 class HomePage extends StatefulWidget {
@@ -24,6 +25,11 @@ class _HomePageState extends State<HomePage> {
       lastConnectionDate = DateTime(2012, 1, 1); // Date par défaut si aucune date n'est trouvée
     }
     return fetchDataSinceLastConnection(DateTime.now().toString());
+  }
+
+  String _formatDate(String dateString) {
+    DateTime date = DateTime.parse(dateString);
+    return DateFormat('HH:mm dd/MM/yyyy').format(date);
   }
 
   @override
@@ -54,7 +60,8 @@ class _HomePageState extends State<HomePage> {
               itemCount: snapshot.data?.length,
               itemBuilder: (context, index) {
                 final record = snapshot.data![index];
-                String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + record['date'];
+                String formattedDate = _formatDate(record['date']);
+                String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + formattedDate;
                 return ListTile(
                   title: Text(record['gc_obo_nature_c'] ?? 'No title'),
                   subtitle: Text(lieuxdate),
