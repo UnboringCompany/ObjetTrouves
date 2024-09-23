@@ -124,7 +124,7 @@ class _FilterPageState extends State<FilteredPage> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final record = snapshot.data![index];
-                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + record['date'];
+                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + record['date'];
                       return ListTile(
                         title: Text(record['gc_obo_nature_c'] ?? 'No title'),
                         subtitle: Text(lieuxdate),
