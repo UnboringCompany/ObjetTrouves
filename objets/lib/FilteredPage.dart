@@ -9,7 +9,7 @@ class FilteredPage extends StatefulWidget {
 class _FilterPageState extends State<FilteredPage> {
   String _selectedGare = 'Paris'; // Valeur par défaut
   String _selectedType = 'Vêtements, chaussures';
-  DateTime? _selectedDateBefore = DateTime(2012,1,1);
+  DateTime? _selectedDateBefore = DateTime(2012, 1, 1);
   DateTime? _selectedDateAfter = DateTime.now();
 
   final List<String> _types = [
@@ -43,6 +43,7 @@ class _FilterPageState extends State<FilteredPage> {
               children: [
                 Expanded(
                   child: DropdownButton<String>(
+                    isExpanded: true,
                     value: _selectedType.isEmpty ? null : _selectedType,
                     hint: Text('Type d\'objet'),
                     items: _types.map((String value) {
@@ -111,7 +112,11 @@ class _FilterPageState extends State<FilteredPage> {
           ),
           Expanded(
             child: FutureBuilder<List<dynamic>>(
-              future: fetchData(_selectedGare, _selectedType, _selectedDateBefore.toString(), _selectedDateAfter.toString()),
+              future: fetchData(
+                  _selectedGare,
+                  _selectedType,
+                  _selectedDateBefore.toString(),
+                  _selectedDateAfter.toString()),
               builder: (context, snapshot) {
                 if (snapshot.connectionState == ConnectionState.waiting) {
                   return Center(child: CircularProgressIndicator());
@@ -124,7 +129,9 @@ class _FilterPageState extends State<FilteredPage> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final record = snapshot.data![index];
-                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + record['date'];
+                      String lieuxdate = record['gc_obo_gare_origine_r_name'] +
+                          " " +
+                          record['date'];
                       return ListTile(
                         title: Text(record['gc_obo_nature_c'] ?? 'No title'),
                         subtitle: Text(lieuxdate),
@@ -140,4 +147,3 @@ class _FilterPageState extends State<FilteredPage> {
     );
   }
 }
-
