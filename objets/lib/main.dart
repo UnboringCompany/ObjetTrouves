@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
-import 'API_call.dart';
 import 'StartPage.dart';
 import 'HomePage.dart';
 import 'FilteredPage.dart';
