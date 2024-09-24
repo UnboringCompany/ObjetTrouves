@@ -91,22 +91,37 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF2E2E2E),
       appBar: AppBar(
-        backgroundColor: Color(0xFF2E2E2E), // Couleur de fond sombre
+        backgroundColor: const Color(0xFF2E2E2E),
         title: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            Image.asset(
-              'assets/sncf.png', // Chemin vers l'image
-              fit: BoxFit.contain,
-              height: 32, // Ajuste la hauteur de l'image
+            // Utilisation de contraintes pour le logo
+            Container(
+              constraints: const BoxConstraints(
+                maxHeight: 45, // Limite la hauteur du logo
+                maxWidth:
+                    80, // Limite la largeur du logo pour les petits écrans
+              ),
+              child: Image.asset(
+                'assets/sncf.png',
+                fit: BoxFit.contain,
+              ),
             ),
-            const SizedBox(width: 10), // Espace entre l'image et le texte
-            const Text(
-              'OBJETS TROUVÉS',
-              style: TextStyle(
-                color: Colors.white,
-                fontSize:
-                    20, // Ajuste la taille du texte// Ajoute une police si tu en as une
+            const SizedBox(width: 10),
+            // Flexible permet au texte de s'ajuster en fonction de l'espace disponible
+            const Flexible(
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: Text(
+                  'OBJETS TROUVÉS',
+                  style: TextStyle(
+                    color: Colors.white,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold,
+                  ),
+                  maxLines: 1, // Limite à une seule ligne
+                  overflow: TextOverflow
+                      .ellipsis, // Ajoute une ellipse si le texte dépasse
+                ),
               ),
             ),
           ],
