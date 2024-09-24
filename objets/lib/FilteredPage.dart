@@ -8,8 +8,8 @@ class FilteredPage extends StatefulWidget {
 }
 
 class _FilterPageState extends State<FilteredPage> {
-  String _selectedGare = 'Paris'; // Valeur par défaut
-  String _selectedType = 'Vêtements, chaussures';
+  String _selectedGare = ''; // Valeur par défaut
+  String _selectedType = 'Tous les types'; // Valeur par défaut
   DateTime? _selectedDateBefore = DateTime(2012, 1, 1);
   DateTime? _selectedDateAfter = DateTime.now();
 
@@ -17,6 +17,7 @@ class _FilterPageState extends State<FilteredPage> {
     'Vêtements, chaussures',
     'Optique',
     'Appareils électroniques, informatiques, appareils photo',
+    'Tous les types',
   ];
 
   String _formatDate(String dateString) {
@@ -138,7 +139,6 @@ class _FilterPageState extends State<FilteredPage> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final record = snapshot.data![index];
-                      print(getLastConnectionDate());
                       String formattedDate = _formatDate(record['date']);
                       String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + formattedDate;
                       return ListTile(
