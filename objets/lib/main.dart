@@ -12,7 +12,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter API Example',
+      debugShowCheckedModeBanner: false,
+      title: 'Objet trouvés SNCF',
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
