@@ -19,7 +19,7 @@ Future<DateTime?> getLastConnectionDate() async {
 }
 
 Future<List<dynamic>> fetchData(String city, String type, String datebefore, String dateafter) async {
-  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=gc_obo_type_c%20%3D%20"$type"%20and%20gc_obo_gare_origine_r_name%20like%20"$city"%20and%20date%20<%20"$dateafter"%20and%20date%20>%20"$datebefore"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=20&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
+  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=gc_obo_type_c%20%3D%20"$type"%20and%20gc_obo_gare_origine_r_name%20like%20"$city"%20and%20date%20<%20"$dateafter"%20and%20date%20>%20"$datebefore"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=100&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
   print("JSON");
   print(response.body);
 
@@ -35,8 +35,8 @@ Future<List<dynamic>> fetchData(String city, String type, String datebefore, Str
   }
 }
 
-Future<List<dynamic>> fetchDataSinceLastConnection(String datebefore, String dateafter) async {
-  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=date%20<%20"$dateafter"%20and%20date%20>%20"$datebefore"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=20&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
+Future<List<dynamic>> fetchDataSinceLastConnection(String datebefore) async {
+  final response = await http.get(Uri.parse('https://data.sncf.com/api/explore/v2.1/catalog/datasets/objets-trouves-restitution/records?where=date%20>%20"$datebefore"%20and%20gc_obo_date_heure_restitution_c%20is%20null&limit=100&offset=0&timezone=UTC&include_links=false&include_app_metas=false'));
   print("JSON");
   print(response.body);
 

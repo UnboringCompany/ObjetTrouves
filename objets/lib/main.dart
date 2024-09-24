@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:intl/intl.dart';
-import 'HomePage.dart';
-import 'FilteredPage.dart';
+import 'API_call.dart';
+import 'StartPage.dart';
+import 'HomePage.dart'; 
+import 'FilteredPage.dart'; 
 
 void main() {
   runApp(MyApp());
@@ -16,12 +18,12 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
       ),
-      initialRoute: '/',
+      initialRoute: '/splash', // Utiliser la route de démarrage
       routes: {
+        '/splash': (context) => SplashScreen(),
         '/': (context) => HomePage(),
         '/filter': (context) => FilteredPage(),
       },
-
       localizationsDelegates: [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,

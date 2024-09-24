@@ -138,6 +138,7 @@ class _FilterPageState extends State<FilteredPage> {
                     itemCount: snapshot.data?.length,
                     itemBuilder: (context, index) {
                       final record = snapshot.data![index];
+                      print(getLastConnectionDate());
                       String formattedDate = _formatDate(record['date']);
                       String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + formattedDate;
                       return ListTile(
