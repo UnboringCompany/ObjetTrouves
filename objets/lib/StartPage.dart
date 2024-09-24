@@ -91,11 +91,26 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF2E2E2E),
       appBar: AppBar(
-        title: const Text(
-          'SNCF Objets Trouvés',
-          style: TextStyle(color: Colors.white),
+        backgroundColor: Color(0xFF2E2E2E), // Couleur de fond sombre
+        title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: <Widget>[
+            Image.asset(
+              'assets/sncf.png', // Chemin vers l'image
+              fit: BoxFit.contain,
+              height: 32, // Ajuste la hauteur de l'image
+            ),
+            const SizedBox(width: 10), // Espace entre l'image et le texte
+            const Text(
+              'OBJETS TROUVÉS',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize:
+                    20, // Ajuste la taille du texte// Ajoute une police si tu en as une
+              ),
+            ),
+          ],
         ),
-        backgroundColor: Color(0xFF2E2E2E),
       ),
       body: Center(
         child: _controller.value.isInitialized
