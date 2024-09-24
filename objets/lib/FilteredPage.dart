@@ -24,7 +24,8 @@ class _FilterPageState extends State<FilteredPage> {
     return DateFormat('HH:mm dd/MM/yyyy').format(date);
   }
 
-  Future<void> _selectDate(BuildContext context, DateTime? initialDate, Function(DateTime) onDateSelected) async {
+  Future<void> _selectDate(BuildContext context, DateTime? initialDate,
+      Function(DateTime) onDateSelected) async {
     final DateTime? picked = await showDatePicker(
       context: context,
       initialDate: initialDate ?? DateTime.now(),
@@ -140,7 +141,9 @@ class _FilterPageState extends State<FilteredPage> {
                       final record = snapshot.data![index];
                       print(getLastConnectionDate());
                       String formattedDate = _formatDate(record['date']);
-                      String lieuxdate = record['gc_obo_gare_origine_r_name'] + " " + formattedDate;
+                      String lieuxdate = record['gc_obo_gare_origine_r_name'] +
+                          " " +
+                          formattedDate;
                       return ListTile(
                         title: Text(record['gc_obo_nature_c'] ?? 'No title'),
                         subtitle: Text(lieuxdate),
@@ -156,4 +159,3 @@ class _FilterPageState extends State<FilteredPage> {
     );
   }
 }
-
