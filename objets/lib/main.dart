@@ -1,10 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
-import 'package:intl/intl.dart';
-import 'API_call.dart';
 import 'StartPage.dart';
-import 'HomePage.dart'; 
-import 'FilteredPage.dart'; 
+import 'HomePage.dart';
+import 'FilteredPage.dart';
 
 void main() {
   runApp(MyApp());
@@ -21,7 +19,7 @@ class MyApp extends StatelessWidget {
       initialRoute: '/splash', // Utiliser la route de démarrage
       routes: {
         '/splash': (context) => SplashScreen(),
-        '/': (context) => HomePage(),
+        '/': (context) => HomePage(data: const []),
         '/filter': (context) => FilteredPage(),
       },
       localizationsDelegates: [
