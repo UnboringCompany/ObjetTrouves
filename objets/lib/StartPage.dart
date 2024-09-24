@@ -1,8 +1,9 @@
+import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:objets/API_call.dart';
 import 'package:objets/HomePage.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:video_player/video_player.dart';
+import 'package:audioplayers/audioplayers.dart';
 
 class SplashScreen extends StatefulWidget {
   @override
@@ -10,27 +11,15 @@ class SplashScreen extends StatefulWidget {
 }
 
 class _SplashScreenState extends State<SplashScreen> {
-  late VideoPlayerController _controller;
   List<dynamic> apiResult = [];
+  final AudioPlayer _audioPlayer = AudioPlayer();
 
   @override
   void initState() {
     super.initState();
-    _controller = VideoPlayerController.asset('assets/thomas-and.gif')
-      ..initialize().then((_) {
-        setState(
-            () {}); // Assurez-vous que le widget est reconstruit lorsque la vidéo est prête
-        _controller.play();
-        _controller.setLooping(true); // Boucler la vidéo
-      });
     _initializeLastConnectionDate();
     _loadData();
-  }
-
-  @override
-  void dispose() {
-    super.dispose();
-    _controller.dispose();
+    _playSound();
   }
 
   Future<void> _initializeLastConnectionDate() async {
@@ -77,13 +66,26 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     // Après réception des données, naviguer vers HomePage et passer le résultat
-    Navigator.pushReplacement(
-      context,
-      MaterialPageRoute(
-        builder: (context) =>
-            HomePage(data: apiResult), // Passage des données à HomePage
-      ),
-    );
+    Timer(Duration(seconds: 2), () {
+      Navigator.pushReplacement(
+        context,
+        MaterialPageRoute(
+          builder: (context) =>
+              HomePage(data: apiResult), // Passage des données à HomePage
+        ),
+      );
+    });
+  }
+
+  void _playSound() async {
+    await _audioPlayer
+        .play(AssetSource('sifflement.mp3')); // Utilise play pour déclencher le son
+  }
+
+  @override
+  void dispose() {
+    _audioPlayer.dispose();
+    super.dispose();
   }
 
   @override
@@ -91,49 +93,29 @@ class _SplashScreenState extends State<SplashScreen> {
     return Scaffold(
       backgroundColor: Color(0xFF2E2E2E),
       appBar: AppBar(
-        backgroundColor: const Color(0xFF2E2E2E),
+        backgroundColor: Color(0xFF2E2E2E), // Couleur de fond sombre
         title: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
-            // Utilisation de contraintes pour le logo
-            Container(
-              constraints: const BoxConstraints(
-                maxHeight: 45, // Limite la hauteur du logo
-                maxWidth:
-                    80, // Limite la largeur du logo pour les petits écrans
-              ),
-              child: Image.asset(
-                'assets/sncf.png',
-                fit: BoxFit.contain,
-              ),
+            Image.asset(
+              'assets/sncf.png', // Chemin vers l'image
+              fit: BoxFit.contain,
+              height: 32, // Ajuste la hauteur de l'image
             ),
-            const SizedBox(width: 10),
-            // Flexible permet au texte de s'ajuster en fonction de l'espace disponible
-            const Flexible(
-              child: FittedBox(
-                fit: BoxFit.scaleDown,
-                child: Text(
-                  'OBJETS TROUVÉS',
-                  style: TextStyle(
-                    color: Colors.white,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
-                  maxLines: 1, // Limite à une seule ligne
-                  overflow: TextOverflow
-                      .ellipsis, // Ajoute une ellipse si le texte dépasse
-                ),
+            const SizedBox(width: 10), // Espace entre l'image et le texte
+            const Text(
+              'OBJETS TROUVÉS',
+              style: TextStyle(
+                color: Colors.white,
+                fontSize:
+                    20, // Ajuste la taille du texte// Ajoute une police si tu en as une
               ),
             ),
           ],
         ),
       ),
       body: Center(
-        child: _controller.value.isInitialized
-            ? AspectRatio(
-                aspectRatio: _controller.value.aspectRatio,
-                child: VideoPlayer(_controller),
-              )
-            : CircularProgressIndicator(),
+        child: Image.asset('assets/thomas-and.gif'),
       ),
     );
   }
