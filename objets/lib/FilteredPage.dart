@@ -50,12 +50,10 @@ class _FilterPageState extends State<FilteredPage> {
         backgroundColor: const Color(0xFF2E2E2E),
         title: Row(
           children: <Widget>[
-            // Utilisation de contraintes pour le logo
             Container(
               constraints: const BoxConstraints(
-                maxHeight: 45, // Limite la hauteur du logo
-                maxWidth:
-                    80, // Limite la largeur du logo pour les petits écrans
+                maxHeight: 45,
+                maxWidth: 80,
               ),
               child: Image.asset(
                 'assets/sncf.png',
@@ -63,7 +61,6 @@ class _FilterPageState extends State<FilteredPage> {
               ),
             ),
             const SizedBox(width: 10),
-            // Flexible permet au texte de s'ajuster en fonction de l'espace disponible
             const Flexible(
               child: FittedBox(
                 fit: BoxFit.scaleDown,
@@ -74,9 +71,8 @@ class _FilterPageState extends State<FilteredPage> {
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                   ),
-                  maxLines: 1, // Limite à une seule ligne
-                  overflow: TextOverflow
-                      .ellipsis, // Ajoute une ellipse si le texte dépasse
+                  maxLines: 1,
+                  overflow: TextOverflow.ellipsis,
                 ),
               ),
             ),
@@ -105,7 +101,7 @@ class _FilterPageState extends State<FilteredPage> {
                   Container(
                     padding: const EdgeInsets.all(16.0),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFD3D3D3), // Fond gris clair
+                      color: const Color(0xFFD3D3D3),
                       borderRadius: BorderRadius.circular(10),
                     ),
                     child: Column(
@@ -194,8 +190,7 @@ class _FilterPageState extends State<FilteredPage> {
                     child: Container(
                       padding: const EdgeInsets.all(16.0),
                       decoration: BoxDecoration(
-                        color: const Color(
-                            0xFFD3D3D3), // Fond gris clair pour les résultats
+                        color: const Color(0xFFD3D3D3),
                         borderRadius: BorderRadius.circular(10),
                       ),
                       child: FutureBuilder<List<dynamic>>(
@@ -246,7 +241,6 @@ class _FilterPageState extends State<FilteredPage> {
             ),
           ),
           const SizedBox(height: 20),
-          // Bouton de retour à l'accueil
           Container(
             decoration: BoxDecoration(
               gradient: const LinearGradient(

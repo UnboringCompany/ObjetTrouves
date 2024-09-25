@@ -66,7 +66,7 @@ class _SplashScreenState extends State<SplashScreen> {
     });
 
     // Après réception des données, naviguer vers HomePage et passer le résultat
-    Timer(Duration(seconds: 2), () {
+    Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
@@ -78,8 +78,8 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
   void _playSound() async {
-    await _audioPlayer
-        .play(AssetSource('sifflement.mp3')); // Utilise play pour déclencher le son
+    await _audioPlayer.play(
+        AssetSource('sifflement.mp3')); // Utilise play pour déclencher le son
   }
 
   @override
@@ -91,24 +91,23 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFF2E2E2E),
+      backgroundColor: const Color(0xFF2E2E2E),
       appBar: AppBar(
-        backgroundColor: Color(0xFF2E2E2E), // Couleur de fond sombre
+        backgroundColor: const Color(0xFF2E2E2E),
         title: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: <Widget>[
             Image.asset(
-              'assets/sncf.png', // Chemin vers l'image
+              'assets/sncf.png',
               fit: BoxFit.contain,
-              height: 32, // Ajuste la hauteur de l'image
+              height: 32,
             ),
-            const SizedBox(width: 10), // Espace entre l'image et le texte
+            const SizedBox(width: 10),
             const Text(
               'OBJETS TROUVÉS',
               style: TextStyle(
                 color: Colors.white,
-                fontSize:
-                    20, // Ajuste la taille du texte// Ajoute une police si tu en as une
+                fontSize: 20,
               ),
             ),
           ],

@@ -23,7 +23,7 @@ class MyApp extends StatelessWidget {
         '/': (context) => HomePage(data: const []),
         '/filter': (context) => FilteredPage(),
       },
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
