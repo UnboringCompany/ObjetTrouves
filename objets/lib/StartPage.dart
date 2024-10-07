@@ -46,40 +46,33 @@ class _SplashScreenState extends State<SplashScreen> {
   Future<List<dynamic>> _fetchDataSinceLastConnection() async {
     DateTime? lastConnectionDate = await getLastConnectionDate();
     if (lastConnectionDate == null) {
-      lastConnectionDate =
-          DateTime(2012, 1, 1); // Date par défaut si aucune date n'est trouvée
+      lastConnectionDate = DateTime(2012, 1, 1);
     }
     print(lastConnectionDate);
     final data =
         await fetchDataSinceLastConnection(lastConnectionDate.toString());
-    await _saveLastConnectionDate(DateTime
-        .now()); // Mettre à jour la date de la dernière connexion après avoir récupéré les données
+    await _saveLastConnectionDate(DateTime.now());
     return data;
   }
 
   Future<void> _loadData() async {
-    // Appel de la fonction qui fait la requête API depuis API_call.dart
-    List result =
-        await _fetchDataSinceLastConnection(); // Remplacer par ta vraie méthode
+    List result = await _fetchDataSinceLastConnection();
     setState(() {
-      apiResult = result; // Stocker le résultat de la requête
+      apiResult = result;
     });
 
-    // Après réception des données, naviguer vers HomePage et passer le résultat
     Timer(const Duration(seconds: 2), () {
       Navigator.pushReplacement(
         context,
         MaterialPageRoute(
-          builder: (context) =>
-              HomePage(data: apiResult), // Passage des données à HomePage
+          builder: (context) => HomePage(data: apiResult),
         ),
       );
     });
   }
 
   void _playSound() async {
-    await _audioPlayer.play(
-        AssetSource('sifflement.mp3')); // Utilise play pour déclencher le son
+    await _audioPlayer.play(AssetSource('sifflement.mp3'));
   }
 
   @override

@@ -7,7 +7,8 @@ class HomePage extends StatelessWidget {
 
   HomePage({required this.data});
 
-  String _formatDate(String dateString) {
+  String _formatDate(String? dateString) {
+    if (dateString == null) return 'Date inconnue';
     DateTime date = DateTime.parse(dateString);
     return DateFormat('HH:mm dd/MM/yyyy').format(date);
   }
@@ -67,10 +68,14 @@ class HomePage extends StatelessWidget {
                     itemCount: data.length,
                     itemBuilder: (context, index) {
                       final record = data[index];
-                      String formattedDate = _formatDate(record['date']);
-                      String lieuxdate = record['gc_obo_gare_origine_r_name'] +
-                          " " +
-                          formattedDate;
+                      String gareOrigine =
+                          record['gc_obo_gare_origine_r_name'] ??
+                              'Gare inconnue';
+                      String formattedDate = record['date'] != null
+                          ? _formatDate(record['date'])
+                          : 'Date inconnue';
+                      String lieuxdate = gareOrigine + " " + formattedDate;
+
                       return ListTile(
                         title: Text(
                           record['gc_obo_nature_c'] ?? 'No title',
