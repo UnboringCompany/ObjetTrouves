@@ -39,3 +39,6 @@ L'écran d'accueil affiche les objets trouvés depuis la dernière connexion. Si
 
 # Recherche avancée
 L'écran de recherche avancée permet de filtrer les objets trouvés par gare d'origine, type d'objet et date. Les résultats sont affichés en temps réel.
+
+## Figma 
+https://www.figma.com/proto/qA3arj77KC0ZnK4BeYKR0n/Objets-Trouv%C3%A9s-SNCF?node-id=0-1&t=UsC5DDERkqBpuey1-1 
